@@ -1,0 +1,29 @@
+{
+  "name": "philippgrashoff/traitsforatkdata",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config":{
+    "platform":{
+      "php":"7.3"
+    }
+  },
+  "require":{
+    "atk4/data": "2.2.0",
+    "atk4/core": "2.2.0",
+    "ext-sodium": "*",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">8"
+  },
+  "autoload":{
+    "psr-4":{
+      "traitsforatkdata\\":"src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "traitsforatkdata\\tests\\": "tests"
+    }
+  }
+}

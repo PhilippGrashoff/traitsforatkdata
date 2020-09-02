@@ -1,0 +1,115 @@
+<?php declare(strict_types=1);
+
+namespace traitsforatkdata;
+
+use atk4\data\Exception;
+
+/**
+ * create cryptic IDs like X3gkd9S-df29D3j in a format if your choice. To do so, implement generateCryptId() function
+ * in each Model using this trait.
+ */
+trait CryptIdTrait
+{
+
+    use UniqueFieldTrait;
+
+    //removed I, l, O, 0 as they can be easily mixed up by humans
+    protected array $possibleChars = [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z',
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F',
+        'G',
+        'H',
+        'J',
+        'K',
+        'L',
+        'M',
+        'N',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+    ];
+
+    /**
+     * sets a cryptic Id to the fieldName passed. Only does something if the field is empty.
+     */
+    public function setCryptId(string $fieldName)
+    {
+        if (!$this->get($fieldName)) {
+            $this->_setCryptId($fieldName);
+            //check if another Record has the same crypt_id, if so generate a new one
+            while (!$this->isFieldUnique($fieldName)) {
+                $this->_setCryptId($fieldName);
+            }
+        }
+        else {
+            $this->getField($fieldName)->read_only = true;
+        }
+    }
+
+    protected function _setCryptId(string $fieldName)
+    {
+        $this->set($fieldName, $this->generateCryptId());
+    }
+
+    /**
+     * Overwrite to your own needs in Models using this trait
+     */
+    protected function generateCryptId(): string
+    {
+        throw new Exception(__FUNCTION__ . ' must be extended in child model');
+    }
+
+    /**
+     * returns a random char from possibleChars. This function is usually called by generateCryptId
+     */
+    protected function getRandomChar(): string
+    {
+        return $this->possibleChars[random_int(0, count($this->possibleChars) - 1)];
+    }
+}
