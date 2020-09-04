@@ -5,11 +5,14 @@ namespace traitsforatkdata\tests;
 use atk4\data\Model;
 use traitsforatkdata\GermanMoneyFormatFieldTrait;
 use atk4\core\AtkPhpunit\TestCase;
+use atk4\data\Persistence;
 use atk4\ui\Persistence\Ui;
 
-class GermanMoneyFormatFieldTraitTest extends TestCase {
+class GermanMoneyFormatFieldTraitTest extends TestCase
+{
 
-    public function testLoadValueToUI() {
+    public function testLoadValueToUI()
+    {
         $a = [];
         $gmf = $this->getTestModel();
         $gmf->set('money_test', '25.25');
@@ -21,7 +24,8 @@ class GermanMoneyFormatFieldTraitTest extends TestCase {
         self::assertEquals(25.25, $res);
     }
 
-    public function testSaveValueFromUI() {
+    public function testSaveValueFromUI()
+    {
         $a = [];
         $gmf = $this->getTestModel();
         $gmf->set('money_test', '25.25');
@@ -40,14 +44,16 @@ class GermanMoneyFormatFieldTraitTest extends TestCase {
         self::assertEquals(25.00, $res);
     }
 
-    protected function getTestModel(): Model {
+    protected function getTestModel(): Model
+    {
         $modelClass = new class() extends Model {
 
             use GermanMoneyFormatFieldTrait;
 
             public $table = 'gmf';
 
-            public function init(): void {
+            public function init(): void
+            {
                 parent::init();
                 $this->addFields(
                     [

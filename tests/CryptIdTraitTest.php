@@ -53,14 +53,14 @@ class CryptIdTraitTest extends TestCase
     }
 
     public function testFieldSetToReadOnlyIfCryptIdNotEmpty() {
-
+        $model = $this->getTestModel();
+        $model->setCryptId('crypt_id');
+        $model->save();
+        $model->setCryptId('crypt_id');
+        self::assertTrue($model->getField('crypt_id')->read_only);
     }
 
-
-    /**
-     *
-     */
-    protected function getTestModel() {
+    protected function getTestModel(Persistence $persistence = null) {
         $modelClass = new class() extends Model {
 
             use CryptIdTrait;
@@ -86,14 +86,10 @@ class CryptIdTraitTest extends TestCase
             }
         };
 
-        return new $modelClass(new Persistence\Array_());
+        return new $modelClass($persistence ? : new Persistence\Array_());
     }
 
-
-    /**
-     *
-     */
-    protected function getTestModelSameCryptId(Persistence $persistence) {
+    protected function getTestModelSameCryptId(Persistence $persistence = null) {
         $modelClass = new class() extends Model {
 
             use CryptIdTrait;
@@ -123,6 +119,6 @@ class CryptIdTraitTest extends TestCase
             }
         };
 
-        return new $modelClass($persistence);
+        return new $modelClass($persistence ? : new Persistence\Array_());
     }
 }

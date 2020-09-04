@@ -2,6 +2,7 @@
 
 namespace traitsforatkdata\tests;
 
+use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\core\AtkPhpunit\TestCase;
@@ -35,6 +36,12 @@ class CachedModelTraitTest extends TestCase {
             3,
             $res
         );
+    }
+
+    public function testExceptionUndefinedModelClass() {
+        $model = $this->getTestModel();
+        self::expectException(Exception::class);
+        $res = $model->getCachedModel('SomeNonExistantClass');
     }
 
     protected function getTestModel(Persistence $persistence = null): Model {

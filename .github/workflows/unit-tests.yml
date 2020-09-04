@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: Install PHP dependencies
         run: |
           if [ "${{ matrix.php }}" == "8.0" ]; then composer config platform.php 7.4.5 ; fi
