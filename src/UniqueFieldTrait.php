@@ -7,19 +7,19 @@ use atk4\data\Exception;
 trait UniqueFieldTrait
 {
 
-    public function isFieldUnique(string $field_name): bool
+    public function isFieldUnique(string $fieldName): bool
     {
-        if (empty($this->get($field_name))) {
+        if (empty($this->get($fieldName))) {
             throw new Exception(
-                'The value for a unique field may not be empty. Field name: ' . $field_name . ' in ' . __FUNCTION__
+                'The value for a unique field may not be empty. Field name: ' . $fieldName . ' in ' . __FUNCTION__
             );
         }
         $other = new static($this->persistence);
         //only load field to save performance
-        $other->only_fields = [$this->id_field, $field_name];
+        $other->only_fields = [$this->id_field, $fieldName];
         $other->addCondition($this->id_field, '!=', $this->get($this->id_field));
-        $other->tryLoadBy($field_name, $this->get($field_name));
+        $other->tryLoadBy($fieldName, $this->get($fieldName));
 
-        return $other->loaded();
+        return !$other->loaded();
     }
 }

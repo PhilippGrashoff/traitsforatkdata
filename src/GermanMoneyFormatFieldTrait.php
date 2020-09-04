@@ -6,9 +6,6 @@ use atk4\data\Field;
 
 trait GermanMoneyFormatFieldTrait {
 
-    /*
-     *
-     */
     protected function germanPriceForMoneyField(Field $field) {
         $field->typecast = [
             null,

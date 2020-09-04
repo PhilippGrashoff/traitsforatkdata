@@ -81,20 +81,15 @@ trait CryptIdTrait
     public function setCryptId(string $fieldName)
     {
         if (!$this->get($fieldName)) {
-            $this->_setCryptId($fieldName);
+            $this->set($fieldName, $this->generateCryptId());
             //check if another Record has the same crypt_id, if so generate a new one
             while (!$this->isFieldUnique($fieldName)) {
-                $this->_setCryptId($fieldName);
+                $this->set($fieldName, $this->generateCryptId());
             }
         }
         else {
             $this->getField($fieldName)->read_only = true;
         }
-    }
-
-    protected function _setCryptId(string $fieldName)
-    {
-        $this->set($fieldName, $this->generateCryptId());
     }
 
     /**

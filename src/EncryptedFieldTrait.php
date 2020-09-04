@@ -2,23 +2,21 @@
 
 namespace traitsforatkdata;
 
-/*
- * Probides functions to store the value of a field encrypted to persistence.
- * Useful for storing credentials that are needed in clear text at some point
- * like Api Tokens
- */
-
 use atk4\data\Exception;
 use atk4\data\Field;
 use atk4\ui\Persistence\UI;
 
+/**
+ * Probides functions to store the value of a field encrypted to persistence.
+ * Useful for storing credentials that are needed in clear text at some point
+ * like Api Tokens.
+ * encryption and decryption taken from PHP manual
+ */
+
+
 trait EncryptedFieldTrait {
 
-    /*
-     * encryption and decryption taken from PHP manual
-     *
-     */
-    public function encryptField(Field $field, string $key) {
+    protected function encryptField(Field $field, string $key) {
         $field->typecast = [
             function($value, $field, $persistence) use ($key) {
                 //hack until https://github.com/atk4/ui/issues/798 is resolved
@@ -37,14 +35,14 @@ trait EncryptedFieldTrait {
             function($value, $field, $persistence) use ($key) {
                 $decoded = base64_decode($value);
                 if(mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-                     throw new Exception('An error occured decrypting an encrypted field: '.$field->short_name);
+                     throw new Exception('An error occurred decrypting an encrypted field: '.$field->short_name);
                 }
                 $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
                 $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 
                 $plain = sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
                 if($plain === false) {
-                    throw new Exception('An error occured decrypting an encrypted field: '.$field->short_name);
+                    throw new Exception('An error occurred decrypting an encrypted field: '.$field->short_name);
                 }
                 sodium_memzero($ciphertext);
                 sodium_memzero($key);

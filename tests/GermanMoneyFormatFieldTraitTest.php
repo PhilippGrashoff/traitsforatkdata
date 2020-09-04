@@ -1,46 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace PMRAtk\tests\phpunit\Data\Traits;
-
+namespace traitsforatkdata\tests;
 
 use atk4\data\Model;
-use atk4\data\Persistence\Array_;
-use atk4\ui\Persistence\UI;
-use PMRAtk\Data\Traits\GermanMoneyFormatFieldTrait;
-use PMRAtk\tests\phpunit\TestCase;
+use traitsforatkdata\GermanMoneyFormatFieldTrait;
+use atk4\core\AtkPhpunit\TestCase;
+use atk4\ui\Persistence\Ui;
 
-/**
- * Class GMF
- * @package PMRAtk\tests\phpunit\Data\Traits
- */
-class GMF extends Model {
+class GermanMoneyFormatFieldTraitTest extends TestCase {
 
-    use GermanMoneyFormatFieldTrait;
-
-    public $table = 'gmf';
-    public function init(): void {
-        parent::init();
-        $this->addFields( [
-            ['money_test', 'type' => 'money'],
-        ]);
-        $this->_germanPriceForMoneyField($this->getField('money_test'));
-    }
-}
-
-
-/**
- * Class GermanMoneyFieldTraitTest
- * @package PMRAtk\tests\phpunit\Data\Traits
- */
-class GermanMoneyFieldTraitTest extends TestCase {
-
-
-    /*
-     *
-     */
     public function testLoadValueToUI() {
         $a = [];
-        $gmf = new GMF(new Array_($a));
+        $gmf = $this->getTestModel();
         $gmf->set('money_test', '25.25');
         $gmf->save();
 
@@ -50,13 +21,9 @@ class GermanMoneyFieldTraitTest extends TestCase {
         self::assertEquals(25.25, $res);
     }
 
-
-    /*
-     *
-     */
     public function testSaveValueFromUI() {
         $a = [];
-        $gmf = new GMF(new Array_($a));
+        $gmf = $this->getTestModel();
         $gmf->set('money_test', '25.25');
         $gmf->save();
 
@@ -71,5 +38,26 @@ class GermanMoneyFieldTraitTest extends TestCase {
         self::assertEquals(25.20, $res);
         $res = $pui->typecastLoadField($gmf->getField('money_test'), '25');
         self::assertEquals(25.00, $res);
+    }
+
+    protected function getTestModel(): Model {
+        $modelClass = new class() extends Model {
+
+            use GermanMoneyFormatFieldTrait;
+
+            public $table = 'gmf';
+
+            public function init(): void {
+                parent::init();
+                $this->addFields(
+                    [
+                        ['money_test', 'type' => 'money'],
+                    ]
+                );
+                $this->germanPriceForMoneyField($this->getField('money_test'));
+            }
+        };
+
+        return new $modelClass(new Persistence\Array_());
     }
 }

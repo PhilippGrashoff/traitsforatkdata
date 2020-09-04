@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace PMRAtk\tests\phpunit\Data\Traits;
-
+namespace traitsforatkdata\tests;
 
 use atk4\data\Model;
-use PMRAtk\Data\Traits\DateTimeHelpersTrait;
-use PMRAtk\tests\phpunit\TestCase;
+use atk4\data\Persistence;
+use atk4\core\AtkPhpunit\TestCase;
+use traitsforatkdata\DateTimeHelpersTrait;
 
 
 class DateTimeHelperTraitTest extends TestCase {
@@ -13,42 +13,57 @@ class DateTimeHelperTraitTest extends TestCase {
     public function testGetDiffMinutes() {
         $d1 = new \DateTime();
         $d2 = clone $d1;
-        $dth = $this->getTestClass();
-        $this->assertEquals(0, $dth->getDateDiffTotalMinutes($d1, $d2));
+        $dth = $this->getTestModel();
+        self::assertEquals(
+            0,
+            $dth->getDateDiffTotalMinutes($d1, $d2)
+        );
         $d2->modify('+100 Days');
-        $this->assertEquals(100*24*60, $dth->getDateDiffTotalMinutes($d1, $d2));
+        self::assertEquals(100*24*60, $dth->getDateDiffTotalMinutes($d1, $d2));
     }
 
     public function testDateCasting() {
-        $dth = $this->getTestClass();
-        $this->assertEquals(
+        $dth = $this->getTestModel();
+        self::assertEquals(
             (new \DateTime())->format('d.m.Y H:i:s'),
             $dth->castDateTimeToGermanString($dth->getField('datetime'))
         );
-        $this->assertEquals(
+        self::assertEquals(
             (new \DateTime())->format('d.m.Y'),
             $dth->castDateTimeToGermanString($dth->getField('date'))
         );
-        $this->assertEquals(
+        self::assertEquals(
             (new \DateTime())->format('H:i:s'),
             $dth->castDateTimeToGermanString($dth->getField('time'))
         );
-        $this->assertEquals(
+        self::assertEquals(
             '',
             $dth->castDateTimeToGermanString($dth->getField('some_other_field'))
         );
     }
 
+    public function testShortenTime() {
+        $dth = $this->getTestModel();
+        self::assertEquals(
+            (new \DateTime())->format('d.m.Y H:i'),
+            $dth->castDateTimeToGermanString($dth->getField('datetime'), true)
+        );
+        self::assertEquals(
+            (new \DateTime())->format('H:i'),
+            $dth->castDateTimeToGermanString($dth->getField('time'), true)
+        );
+    }
+
     public function testNoDateTimeInterFaceValue() {
-        $dth = $this->getTestClass();
+        $dth = $this->getTestModel();
         $dth->set('some_other_field', 'lala');
-        $this->assertEquals(
+        self::assertEquals(
             'lala',
             $dth->castDateTimeToGermanString($dth->getField('some_other_field'))
         );
     }
 
-    protected function getTestClass(): Model {
+    protected function getTestModel(): Model {
         $class = new class() extends Model {
 
             use DateTimeHelpersTrait;
@@ -69,6 +84,6 @@ class DateTimeHelperTraitTest extends TestCase {
             }
         };
 
-        return new $class(self::$app->db);
+        return new $class(new Persistence\Array_());
     }
 }
