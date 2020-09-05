@@ -4,6 +4,22 @@ namespace traitsforatkdata;
 
 use atk4\data\Exception;
 
+/**
+ * Use the function provided by this trait to check if no other record in the same table has the same value.
+ * Example: Your model has a field which must be unique. Before inserting into Database you want to make sure
+ * no DB error will occur due to duplicate value for the field which must be unique.
+ * $this->onHook(
+ *    Model::HOOK_BEFORE_SAVE,
+ *    function($model, $isUpdate) {
+ *        if($isUpdate) {
+ *            return;
+ *        }
+ *        while(!$model->isFieldUnique('some_field_which_must_be_unique) {
+ *            $model->recalculateSomeFieldWhichMustBeUnique(); //some function which recalculates field value.
+ *        }
+ *    }
+ * );
+ */
 trait UniqueFieldTrait
 {
 

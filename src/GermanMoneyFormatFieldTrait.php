@@ -10,7 +10,7 @@ trait GermanMoneyFormatFieldTrait {
         $field->typecast = [
             null,
             function($value, $field, $persistence) {
-                return round((float) str_replace(",",".", $value), 4);
+                return round((float) str_replace(",",".", (string) $value), 4);
             },
         ];
     }

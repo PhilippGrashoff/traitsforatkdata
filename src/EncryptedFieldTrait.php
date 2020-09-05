@@ -7,13 +7,11 @@ use atk4\data\Field;
 use atk4\ui\Persistence\UI;
 
 /**
- * Probides functions to store the value of a field encrypted to persistence.
+ * Provides functions to store the value of a field encrypted to persistence.
  * Useful for storing credentials that are needed in clear text at some point
  * like Api Tokens.
  * encryption and decryption taken from PHP manual
  */
-
-
 trait EncryptedFieldTrait {
 
     protected function encryptField(Field $field, string $key) {
