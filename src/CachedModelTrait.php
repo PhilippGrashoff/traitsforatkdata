@@ -13,7 +13,7 @@ use atk4\data\Exception;
  */
 trait CachedModelTrait  {
 
-    protected array $cachedModels = [];
+    protected $cachedModels = [];
 
     public function getCachedModel(string $modelName): array
     {

@@ -14,7 +14,7 @@ trait CryptIdTrait
     use UniqueFieldTrait;
 
     //removed I, l, O, 0 as they can be easily mixed up by humans
-    protected array $possibleChars = [
+    protected $possibleChars = [
         '1',
         '2',
         '3',
