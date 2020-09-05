@@ -1,4 +1,4 @@
-#traitsforatkdata
+# traitsforatkdata
 
 [![codecov](https://codecov.io/gh/PhilippGrashoff/traitsforatkdata/branch/master/graph/badge.svg)](https://codecov.io/gh/PhilippGrashoff/traitsforatkdata)
 

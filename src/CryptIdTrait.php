@@ -11,7 +11,7 @@ use atk4\data\Exception;
 trait CryptIdTrait
 {
 
-    use UniqueFieldTrait;
+    use UniqueFieldTrait; //@codeCoverageIgnore Seems some Bug in Code Coverage, this line is marked as not covered
 
     //removed I, l, O, 0 as they can be easily mixed up by humans
     protected $possibleChars = [
