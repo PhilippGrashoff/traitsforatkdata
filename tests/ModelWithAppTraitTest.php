@@ -10,7 +10,7 @@ use atk4\data\Persistence;
 use atk4\ui\App;
 use traitsforatkdata\ModelWithAppTrait;
 
-class AtkModelWithAppTraitTest extends TestCase {
+class ModelWithAppTraitTest extends TestCase {
 
     public function testAppIsPresent() {
         $persistence = Persistence::connect('sqlite::memory:');

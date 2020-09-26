@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace traitsforatkdata\tests;
+namespace traitsforatkdata;
 
 use atk4\data\Persistence;
 use atk4\schema\Migration;
