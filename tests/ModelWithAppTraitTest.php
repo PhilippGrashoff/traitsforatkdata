@@ -36,7 +36,7 @@ class ModelWithAppTraitTest extends TestCase {
             use ModelWithAppTrait;
 
             public $table = 'sometable';
-            public function init(): void {
+            protected function init(): void {
                 parent::init();
                 $this->addField('somefield');
             }

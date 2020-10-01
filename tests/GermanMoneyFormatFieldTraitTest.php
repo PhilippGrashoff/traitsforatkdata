@@ -52,7 +52,7 @@ class GermanMoneyFormatFieldTraitTest extends TestCase
 
             public $table = 'gmf';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addFields(

@@ -69,7 +69,7 @@ class CryptIdTraitTest extends TestCase
 
             public $addition = 'abc';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addField('crypt_id');
@@ -98,7 +98,7 @@ class CryptIdTraitTest extends TestCase
 
             public $addition = '';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addField('crypt_id');

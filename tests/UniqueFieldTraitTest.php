@@ -47,7 +47,7 @@ class UniqueFieldTraitTest extends TestCase
 
             public $table = 'sometable';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addField('unique_field');

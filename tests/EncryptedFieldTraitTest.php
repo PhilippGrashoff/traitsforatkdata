@@ -80,7 +80,7 @@ class EncryptedFieldTraitTest extends TestCase {
 
             use EncryptedFieldTrait;
 
-            public function init(): void {
+            protected function init(): void {
                 parent::init();
                 $this->addField('value');
                 $this->encryptField($this->getField('value'), '1234567890abcefd1234567890abcefd');
@@ -95,7 +95,7 @@ class EncryptedFieldTraitTest extends TestCase {
 
             use EncryptedFieldTrait;
 
-            public function init(): void {
+            protected function init(): void {
                 parent::init();
                 $this->addField('value');
             }

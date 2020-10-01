@@ -5,6 +5,7 @@ namespace traitsforatkdata\tests;
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\core\AtkPhpunit\TestCase;
+use atk4\schema\Migration;
 use traitsforatkdata\DateTimeHelpersTrait;
 
 
@@ -70,7 +71,7 @@ class DateTimeHelperTraitTest extends TestCase {
 
             public $table = 'some_table';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addField('datetime', ['type' => 'datetime']);
@@ -84,6 +85,10 @@ class DateTimeHelperTraitTest extends TestCase {
             }
         };
 
-        return new $class(new Persistence\Array_());
+        $persistence = Persistence::connect('sqlite::memory:');
+        $model = new $class($persistence);
+        Migration::of($model)->drop()->create();
+
+        return $model;
     }
 }

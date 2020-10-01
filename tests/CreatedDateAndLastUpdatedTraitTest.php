@@ -4,7 +4,8 @@ namespace traitsforatkdata\tests;
 
 use atk4\core\AtkPhpunit\TestCase;
 use atk4\data\Model;
-use atk4\data\Persistence\Array_;
+use atk4\data\Persistence;
+use atk4\schema\Migration;
 use traitsforatkdata\CreatedDateAndLastUpdatedTrait;
 
 
@@ -47,7 +48,7 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase {
 
             public $table = 'sometable';
 
-            public function init(): void
+            protected function init(): void
             {
                 parent::init();
                 $this->addField('name');
@@ -56,7 +57,12 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase {
             }
         };
 
-        return new $modelClass(new Array_());
+
+        $persistence = Persistence::connect('sqlite::memory:');
+        $model = new $modelClass($persistence);
+        Migration::of($model)->drop()->create();
+
+        return $model;
     }
     /**/
 }

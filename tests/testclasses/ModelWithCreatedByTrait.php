@@ -15,7 +15,7 @@ class ModelWithCreatedByTrait extends Model {
 
     public $table = 'sometable';
 
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
         $this->addField('somefield');
