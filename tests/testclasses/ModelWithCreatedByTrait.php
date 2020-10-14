@@ -19,7 +19,6 @@ class ModelWithCreatedByTrait extends Model {
     {
         parent::init();
         $this->addField('somefield');
-        $this->addCreatedByFields();
-        $this->addCreatedByHook();
+        $this->addCreatedByFieldAndHook();
     }
 }

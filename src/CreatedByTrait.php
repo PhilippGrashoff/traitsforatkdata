@@ -5,42 +5,32 @@ namespace traitsforatkdata;
 use atk4\data\Model;
 
 
-trait CreatedByTrait {
+trait CreatedByTrait
+{
 
-    protected function addCreatedByFields(): void {
+    protected function addCreatedByFieldAndHook(string $nameField = 'name'): void
+    {
         // Adds created_date and created_by field to model
-        $this->addFields(
+        $this->addField(
+            'created_by',
             [
-                [
-                    'created_by',
-                    'type' => 'string',
-                    'system' => true
-                ],
-                [
-                    'created_by_name',
-                    'type' => 'string',
-                    'system' => true
-                ],
-            ]
+                'type' => 'string',
+                'system' => true
+            ],
         );
-    }
 
-    protected function addCreatedByHook(string $fieldName = 'name'): void {
         $this->onHook(
             Model::HOOK_BEFORE_SAVE,
-            function (Model $model, $isUpdate) use ($fieldName) {
+            function (Model $model, $isUpdate) use ($nameField) {
                 if ($isUpdate) {
                     return;
                 }
 
-                if(
+                if (
                     isset($this->app->auth->user)
                     && $this->app->auth->user->loaded()
                 ) {
                     $model->set('created_by', $this->app->auth->user->get($this->app->auth->user->id_field));
-                    if($this->app->auth->user->hasField($fieldName)) {
-                        $model->set('created_by_name', $this->app->auth->user->get($fieldName));
-                    }
                 }
             }
         );

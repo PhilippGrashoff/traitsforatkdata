@@ -29,11 +29,6 @@ class CreatedByTraitTest extends TestCase {
             $model->get('created_by')
         );
 
-        self::assertEquals(
-            $app->auth->user->get('name'),
-            $model->get('created_by_name')
-        );
-
         //call again to cover missing line
         $model->save();
     }
