@@ -16,7 +16,9 @@ class TestCase extends \atk4\core\AtkPhpunit\TestCase
     protected function getSqliteTestPersistence(array $additionalClasses = [], App $app = null): Persistence
     {
         $allClasses = array_merge($this->sqlitePersistenceModels, $additionalClasses);
-        $persistence = Persistence::connect('sqlite::memory:');
+
+        $persistence = new PersistenceSqlWithApp('sqlite::memory:');
+        $persistence->driverType = 'sqlite';
         if($app) {
             $persistence->app = $app;
         }
