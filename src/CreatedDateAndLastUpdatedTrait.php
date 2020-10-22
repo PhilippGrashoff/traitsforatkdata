@@ -30,7 +30,7 @@ trait CreatedDateAndLastUpdatedTrait {
     protected function addCreatedDateAndLastUpdatedHook() {
         $this->onHook(
             Model::HOOK_BEFORE_SAVE,
-            function ($model, $isUpdate) {
+            function (self $model, $isUpdate) {
                 if (
                     !$isUpdate
                     && !$model->get('created_date')

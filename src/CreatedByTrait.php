@@ -8,7 +8,7 @@ use atk4\data\Model;
 trait CreatedByTrait
 {
 
-    protected function addCreatedByFieldAndHook(string $nameField = 'name'): void
+    protected function addCreatedByFieldAndHook(): void
     {
         // Adds created_date and created_by field to model
         $this->addField(
@@ -21,7 +21,7 @@ trait CreatedByTrait
 
         $this->onHook(
             Model::HOOK_BEFORE_SAVE,
-            function (Model $model, $isUpdate) use ($nameField) {
+            function (self $model, $isUpdate) {
                 if ($isUpdate) {
                     return;
                 }
