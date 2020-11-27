@@ -45,6 +45,8 @@ class EncryptedFieldTraitTest extends TestCase {
         $ui = new Ui();
         $res = $ui->typecastSaveField($model->getField('value'), $model->get('value'));
         self::assertEquals('Duggu', $res);
+        $res = $ui->typecastLoadField($model->getField('value'), $model->get('value'));
+        self::assertEquals('Duggu', $res);
     }
 
     public function testExceptionOnDecryptFail() {

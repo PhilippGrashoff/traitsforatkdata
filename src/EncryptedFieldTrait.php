@@ -31,6 +31,10 @@ trait EncryptedFieldTrait {
                 return $cipher;
             },
             function($value, $field, $persistence) use ($key) {
+                //hack until https://github.com/atk4/ui/issues/798 is resolved
+                if($persistence instanceof UI) {
+                    return $value;
+                }
                 $decoded = base64_decode($value);
                 if(mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
                      throw new Exception('An error occurred decrypting an encrypted field: '.$field->short_name);
