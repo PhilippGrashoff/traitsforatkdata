@@ -12,7 +12,6 @@
     "atk4/ui": "2.3.*",
     "atk4/core": "2.3.*",
     "atk4/schema": "2.3.*",
-    "ext-sodium": "*",
     "ext-mbstring": "*"
   },
   "require-dev": {
