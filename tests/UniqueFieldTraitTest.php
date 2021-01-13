@@ -2,16 +2,17 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\core\AtkPhpunit\TestCase;
-use atk4\data\Model;
-use traitsforatkdata\UniqueFieldTrait;
+use traitsforatkdata\TestCase;
 use atk4\data\Exception;
 use atk4\data\Persistence;
 use atk4\schema\Migration;
+use traitsforatkdata\tests\testclasses\ModelWithUniqueFieldTrait;
 
 
 class UniqueFieldTraitTest extends TestCase
 {
+
+    protected $sqlitePersistenceModels = [ModelWithUniqueFieldTrait::class];
 
     public function testExceptionOnEmptyValue()
     {
@@ -20,12 +21,18 @@ class UniqueFieldTraitTest extends TestCase
         $model->isFieldUnique('unique_field');
     }
 
+    public function testNoExceptionIfAllowEmptyIsTrue()
+    {
+        $model = $this->getTestModel();
+        $model->isFieldUnique('unique_field', true);
+        self::expectException(Exception::class);
+        $model->isFieldUnique('unique_field');
+    }
+
     public function testReturnFalseIfOtherRecordWithSameUniqueFieldValueExists()
     {
-        //use SQL Persistence here as it supports conditions
-        $persistence = Persistence::connect('sqlite::memory:');
+        $persistence = $this->getSqliteTestPersistence();
         $model = $this->getTestModel($persistence);
-        Migration::of($model)->drop()->create();
         $model->set('unique_field', 'ABC');
         $model->save();
         self::assertTrue($model->isFieldUnique('unique_field'));
@@ -35,25 +42,11 @@ class UniqueFieldTraitTest extends TestCase
         $model2->set('unique_field', 'DEF');
         self::assertTrue($model2->isFieldUnique('unique_field'));
         $model2->set('unique_field', 'ABC');
-        $otherModel = $this->getTestModel($persistence);
         self::assertFalse($model2->isFieldUnique('unique_field'));
     }
 
-    protected function getTestModel(Persistence $persistence = null): Model
+    protected function getTestModel(Persistence $persistence = null): ModelWithUniqueFieldTrait
     {
-        $modelClass = new class() extends Model {
-
-            use UniqueFieldTrait;
-
-            public $table = 'sometable';
-
-            protected function init(): void
-            {
-                parent::init();
-                $this->addField('unique_field');
-            }
-        };
-
-        return new $modelClass($persistence ?: new Persistence\Array_());
+        return new ModelWithUniqueFieldTrait($persistence ?: $this->getSqliteTestPersistence());
     }
 }

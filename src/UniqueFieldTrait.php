@@ -23,9 +23,12 @@ use atk4\data\Exception;
 trait UniqueFieldTrait
 {
 
-    public function isFieldUnique(string $fieldName): bool
+    public function isFieldUnique(string $fieldName, $allowEmpty = false): bool
     {
-        if (empty($this->get($fieldName))) {
+        if (
+            empty($this->get($fieldName))
+            && !$allowEmpty
+        ) {
             throw new Exception(
                 'The value for a unique field may not be empty. Field name: ' . $fieldName . ' in ' . __FUNCTION__
             );
