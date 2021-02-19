@@ -5,9 +5,11 @@ namespace traitsforatkdata;
 use atk4\data\Model;
 
 
-trait CreatedDateAndLastUpdatedTrait {
+trait CreatedDateAndLastUpdatedTrait
+{
 
-    protected function addCreatedDateAndLastUpdateFields() {
+    protected function addCreatedDateAndLastUpdateFields()
+    {
         // Adds created_date and created_by field to model
         $this->addFields(
             [
@@ -27,18 +29,24 @@ trait CreatedDateAndLastUpdatedTrait {
         );
     }
 
-    protected function addCreatedDateAndLastUpdatedHook() {
+    /**
+     * Important that this is done in before update hook. Otherwise models are saved to persistence
+     * even if there was no change to save.
+     */
+    protected function addCreatedDateAndLastUpdatedHook()
+    {
         $this->onHook(
-            Model::HOOK_BEFORE_SAVE,
-            function (self $model, $isUpdate) {
-                if (
-                    !$isUpdate
-                    && !$model->get('created_date')
-                ) {
-                    $model->set('created_date', new \DateTime());
-                } else {
-                    $model->set('last_updated', new \DateTime());
-                }
+            Model::HOOK_BEFORE_INSERT,
+            function (self $model, array &$data) {
+                $data['created_date'] = new \DateTime();
+                $model->set('created_date', $data['created_date']);
+            }
+        );
+        $this->onHook(
+            Model::HOOK_BEFORE_UPDATE,
+            function (self $model, array &$data) {
+                $data['last_updated'] = new \DateTime();
+                $model->set('last_updated', $data['last_updated']);
             }
         );
     }

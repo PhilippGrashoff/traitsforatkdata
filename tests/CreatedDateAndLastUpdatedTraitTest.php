@@ -9,10 +9,11 @@ use atk4\schema\Migration;
 use traitsforatkdata\CreatedDateAndLastUpdatedTrait;
 
 
-class CreatedDateAndLastUpdatedTraitTest extends TestCase {
+class CreatedDateAndLastUpdatedTraitTest extends TestCase
+{
 
-    public function testCreatedDateAndLastUpdated() {
-
+    public function testCreatedDateAndLastUpdated()
+    {
         $currentDateTime = new \DateTime();
         $model = $this->getTestModel();
         $model->save();
@@ -40,8 +41,36 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase {
         );
     }
 
+    /**
+     * before, last_updated was set in before update hook. That caused models to be always saved even if
+     * there was nothing to save. This was changed, this test ensures that this stays.
+     */
+    public function testNoFieldsDirtyNothingIsSaved()
+    {
+        $model = $this->getTestModel();
+        $model->save();
+        $lastUpdated = $model->get('last_updated');
+        self::assertNull($lastUpdated);
+        $model->save();
+        self::assertSame(
+            $model->get('last_updated'),
+            $lastUpdated
+        );
+        $model->set('name', 'somename');
+        $model->save();
+        self::assertSame(
+            'somename',
+            $model->get('name')
+        );
+        self::assertInstanceOf(
+            \DateTimeInterface::class,
+            $model->get('last_updated')
+        );
+    }
 
-    protected function getTestModel(): Model {
+
+    protected function getTestModel(): Model
+    {
         $modelClass = new class() extends Model {
 
             use CreatedDateAndLastUpdatedTrait;
