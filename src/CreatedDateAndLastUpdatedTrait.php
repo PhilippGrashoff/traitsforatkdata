@@ -38,6 +38,9 @@ trait CreatedDateAndLastUpdatedTrait
         $this->onHook(
             Model::HOOK_BEFORE_INSERT,
             function (self $model, array &$data) {
+                if($data['created_date']) {
+                    return;
+                }
                 $data['created_date'] = new \DateTime();
                 $model->set('created_date', $data['created_date']);
             }

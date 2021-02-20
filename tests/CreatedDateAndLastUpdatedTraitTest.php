@@ -68,6 +68,16 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
         );
     }
 
+    public function testSetCreatedDateNotOverwritten() {
+        $model = $this->getTestModel();
+        $model->set('created_date', (new \DateTime())->modify('-1 Month'));
+        $model->save();
+
+        self::assertEquals(
+            (new \DateTime())->modify('-1 Month')->getTimestamp(),
+            $model->get('created_date')->getTimestamp()
+        );
+    }
 
     protected function getTestModel(): Model
     {
