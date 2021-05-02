@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata;
 
-use atk4\core\Exception;
+use Atk4\Core\Exception;
 
 
 /**

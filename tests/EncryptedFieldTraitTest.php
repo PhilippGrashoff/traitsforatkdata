@@ -3,12 +3,12 @@
 namespace traitsforatkdata\tests;
 
 
-use atk4\ui\Persistence\Ui;
-use atk4\core\AtkPhpunit\TestCase;
+use Atk4\Ui\Persistence\Ui;
+use traitsforatkdata\TestCase;
 use traitsforatkdata\EncryptedFieldTrait;
-use atk4\data\Persistence;
-use atk4\data\Model;
-use atk4\data\Exception;
+use Atk4\Data\Persistence;
+use Atk4\Data\Model;
+use Atk4\Data\Exception;
 
 class EncryptedFieldTraitTest extends TestCase {
 

@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata;
 
-use atk4\data\Field;
+use Atk4\Data\Field;
 
 trait DateTimeHelpersTrait
 {

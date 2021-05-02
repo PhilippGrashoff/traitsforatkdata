@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata;
 
-use atk4\data\Exception;
+use Atk4\Data\Exception;
 
 /**
  * Use the function provided by this trait to check if no other record in the same table has the same value.

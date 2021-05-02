@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\ui\App;
+use Atk4\Ui\App;
 use traitsforatkdata\TestCase;
 
 
@@ -10,6 +10,6 @@ class TestCaseTest extends TestCase {
 
     public function testSetAppGetSqlitePersistence() {
         $persistence = $this->getSqliteTestPersistence([], new App(['always_run' => false]));
-        self::assertInstanceOf(App::class, $persistence->app);
+        self::assertInstanceOf(App::class, $persistence->getApp());
     }
 }

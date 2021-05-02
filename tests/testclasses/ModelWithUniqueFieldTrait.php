@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace traitsforatkdata\tests\testclasses;
 
-use atk4\data\Model;
+use Atk4\Data\Model;
 use traitsforatkdata\UniqueFieldTrait;
 
 class ModelWithUniqueFieldTrait extends Model

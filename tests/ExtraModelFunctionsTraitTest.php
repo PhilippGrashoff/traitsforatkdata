@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace traitsforatkdata\tests;
 
 
-use atk4\data\Exception;
+use Atk4\Data\Exception;
 use traitsforatkdata\tests\testclasses\User;
 use traitsforatkdata\TestCase;
 use traitsforatkdata\tests\testclasses\ModelWithExtraFunctions;

@@ -2,10 +2,10 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\data\Exception;
-use atk4\data\Model;
-use atk4\data\Persistence;
-use atk4\core\AtkPhpunit\TestCase;
+use Atk4\Data\Exception;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
+use traitsforatkdata\TestCase;
 use traitsforatkdata\CachedModelTrait;
 
 

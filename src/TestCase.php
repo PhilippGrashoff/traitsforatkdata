@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace traitsforatkdata;
 
-use atk4\data\Persistence;
-use atk4\schema\Migration;
-use atk4\ui\App;
+use Atk4\Data\Persistence;
+use Atk4\Schema\Migration;
+use Atk4\Ui\App;
 
-class TestCase extends \atk4\core\AtkPhpunit\TestCase
+class TestCase extends \Atk4\Core\AtkPhpunit\TestCase
 {
 
     protected $sqlitePersistenceModels = [];
@@ -17,14 +17,19 @@ class TestCase extends \atk4\core\AtkPhpunit\TestCase
     {
         $allClasses = array_merge($this->sqlitePersistenceModels, $additionalClasses);
 
-        $persistence = new PersistenceSqlWithApp('sqlite::memory:');
-        $persistence->driverType = 'sqlite';
-        if($app) {
-            $persistence->app = $app;
+        if ($app) {
+            $persistence = new PersistenceSqlWithApp('sqlite::memory:');
+            $persistence->setApp($app);
+        } else {
+            $persistence = new Persistence\Sql('sqlite::memory:');
         }
+        $persistence->driverType = 'sqlite';
+
+        $migration = new Migration($persistence);
         foreach ($allClasses as $className) {
             $model = new $className($persistence);
-            Migration::of($model)->drop()->create();
+            $migration->setModel($model);
+            $migration->dropIfExists()->create();
         }
 
         return $persistence;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace traitsforatkdata;
 
-use atk4\data\Exception;
+use Atk4\Data\Exception;
 
 /**
  * Sometimes it makes sense to store all records of a model once for the whole request to avoid a lot of DB requests.

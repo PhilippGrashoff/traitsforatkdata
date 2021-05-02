@@ -2,20 +2,23 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\core\AtkPhpunit\TestCase;
-use atk4\data\Model;
-use atk4\data\Persistence;
+use traitsforatkdata\TestCase;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
 use atk4\schema\Migration;
 use traitsforatkdata\CreatedDateAndLastUpdatedTrait;
+use traitsforatkdata\tests\testclasses\ModelWithCreatedDateAndLastUpdatedTrait;
 
 
 class CreatedDateAndLastUpdatedTraitTest extends TestCase
 {
 
+    protected $sqlitePersistenceModels = [ModelWithCreatedDateAndLastUpdatedTrait::class];
+
     public function testCreatedDateAndLastUpdated()
     {
         $currentDateTime = new \DateTime();
-        $model = $this->getTestModel();
+        $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
         $model->save();
 
         self::assertEquals(
@@ -47,7 +50,7 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
      */
     public function testNoFieldsDirtyNothingIsSaved()
     {
-        $model = $this->getTestModel();
+        $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
         $model->save();
         $lastUpdated = $model->get('last_updated');
         self::assertNull($lastUpdated);
@@ -69,7 +72,7 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
     }
 
     public function testSetCreatedDateNotOverwritten() {
-        $model = $this->getTestModel();
+        $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
         $model->set('created_date', (new \DateTime())->modify('-1 Month'));
         $model->save();
 
@@ -78,30 +81,4 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
             $model->get('created_date')->getTimestamp()
         );
     }
-
-    protected function getTestModel(): Model
-    {
-        $modelClass = new class() extends Model {
-
-            use CreatedDateAndLastUpdatedTrait;
-
-            public $table = 'sometable';
-
-            protected function init(): void
-            {
-                parent::init();
-                $this->addField('name');
-                $this->addCreatedDateAndLastUpdateFields();
-                $this->addCreatedDateAndLastUpdatedHook();
-            }
-        };
-
-
-        $persistence = Persistence::connect('sqlite::memory:');
-        $model = new $modelClass($persistence);
-        Migration::of($model)->drop()->create();
-
-        return $model;
-    }
-    /**/
 }

@@ -3,8 +3,8 @@
 namespace traitsforatkdata\tests;
 
 use traitsforatkdata\TestCase;
-use atk4\data\Exception;
-use atk4\data\Persistence;
+use Atk4\Data\Exception;
+use Atk4\Data\Persistence;
 use atk4\schema\Migration;
 use traitsforatkdata\tests\testclasses\ModelWithUniqueFieldTrait;
 

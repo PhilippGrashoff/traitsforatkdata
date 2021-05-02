@@ -2,11 +2,11 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\data\Model;
+use Atk4\Data\Model;
 use traitsforatkdata\GermanMoneyFormatFieldTrait;
-use atk4\core\AtkPhpunit\TestCase;
-use atk4\data\Persistence;
-use atk4\ui\Persistence\Ui;
+use traitsforatkdata\TestCase;
+use Atk4\Data\Persistence;
+use Atk4\Ui\Persistence\Ui;
 
 class GermanMoneyFormatFieldTraitTest extends TestCase
 {

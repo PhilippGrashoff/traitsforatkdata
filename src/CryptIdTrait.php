@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata;
 
-use atk4\data\Exception;
+use Atk4\Data\Exception;
 
 /**
  * create cryptic IDs like X3gkd9S-df29D3j in a format if your choice. To do so, implement generateCryptId() function

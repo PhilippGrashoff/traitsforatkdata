@@ -2,7 +2,7 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\ui\App;
+use Atk4\Ui\App;
 use traitsforatkdata\TestCase;
 use traitsforatkdata\tests\testclasses\ModelWithCreatedByTrait;
 use traitsforatkdata\tests\testclasses\User;

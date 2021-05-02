@@ -2,8 +2,8 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\core\Exception;
-use atk4\ui\App;
+use Atk4\Core\Exception;
+use Atk4\Ui\App;
 use traitsforatkdata\TestCase;
 use traitsforatkdata\UserException;
 

@@ -2,9 +2,9 @@
 
 namespace traitsforatkdata;
 
-use atk4\data\Exception;
-use atk4\data\Field;
-use atk4\ui\Persistence\UI;
+use Atk4\Data\Exception;
+use Atk4\Data\Field;
+use Atk4\Ui\Persistence\UI;
 
 /**
  * Provides functions to store the value of a field encrypted to persistence.

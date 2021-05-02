@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace traitsforatkdata\tests\testclasses;
 
-use atk4\core\AppScopeTrait;
-use atk4\data\Model;
+use Atk4\Core\AppScopeTrait;
+use Atk4\Data\Model;
 use traitsforatkdata\CreatedByTrait;
 
 class User extends Model {
 
     use CreatedByTrait;
-    use AppScopeTrait;
 
     public $table = 'user';
 

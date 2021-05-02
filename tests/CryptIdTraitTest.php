@@ -2,16 +2,19 @@
 
 namespace traitsforatkdata\tests;
 
-use atk4\core\AtkPhpunit\TestCase;
-use atk4\data\Exception;
-use atk4\data\Model;
-use atk4\data\Persistence;
+use traitsforatkdata\TestCase;
+use Atk4\Data\Exception;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
 use atk4\schema\Migration;
 use traitsforatkdata\CryptIdTrait;
+use traitsforatkdata\tests\testclasses\ModelWithCryptIdTrait;
 
 
 class CryptIdTraitTest extends TestCase
 {
+
+    protected $sqlitePersistenceModels = [ModelWithCryptIdTrait::class];
 
     public function testExceptionOverwriteGenerate()
     {
@@ -27,7 +30,7 @@ class CryptIdTraitTest extends TestCase
 
     public function testsetCryptId()
     {
-        $model = $this->getTestModel();
+        $model = new ModelWithCryptIdTrait($this->getSqliteTestPersistence());
         $model->setCryptId('crypt_id');
         self::assertSame(
             12,
@@ -41,84 +44,19 @@ class CryptIdTraitTest extends TestCase
      */
     public function testCryptIdRegeneratedIfSameCryptIdAlreadyExists()
     {
-        //use SQL Persistence here as it supports conditions
-        $persistence = Persistence::connect('sqlite::memory:');
-        $model = $this->getTestModelSameCryptId($persistence);
-        Migration::of($model)->drop()->create();
+        $persistence = $this->getSqliteTestPersistence();
+        $model = new ModelWithCryptIdTrait($persistence, ['createSameCryptId' => true]);
         $model->save();
         self::assertEquals('samestring', $model->get('crypt_id'));
-        $model2 = $this->getTestModelSameCryptId($persistence);
+        $model2 = new ModelWithCryptIdTrait($persistence, ['createSameCryptId' => true]);
         $model2->save();
         self::assertEquals('samestringabc', $model2->get('crypt_id'));
     }
 
     public function testFieldSetToReadOnlyIfCryptIdNotEmpty() {
-        $model = $this->getTestModel();
-        $model->setCryptId('crypt_id');
+        $model = new ModelWithCryptIdTrait($this->getSqliteTestPersistence());
         $model->save();
         $model->setCryptId('crypt_id');
         self::assertTrue($model->getField('crypt_id')->read_only);
-    }
-
-    protected function getTestModel(Persistence $persistence = null) {
-        $modelClass = new class() extends Model {
-
-            use CryptIdTrait;
-
-            public $table = 'sometable';
-
-            public $addition = 'abc';
-
-            protected function init(): void
-            {
-                parent::init();
-                $this->addField('crypt_id');
-            }
-
-            protected function generateCryptId(): string
-            {
-                $return = '';
-                for($i = 1; $i <= 12; $i ++) {
-                    $return .= $this->getRandomChar();
-                }
-
-                return $return;
-            }
-        };
-
-        return new $modelClass($persistence ? : new Persistence\Array_());
-    }
-
-    protected function getTestModelSameCryptId(Persistence $persistence = null) {
-        $modelClass = new class() extends Model {
-
-            use CryptIdTrait;
-
-            public $table = 'sometable';
-
-            public $addition = '';
-
-            protected function init(): void
-            {
-                parent::init();
-                $this->addField('crypt_id');
-                $this->onHook(
-                    Model::HOOK_BEFORE_SAVE,
-                    function ($model, $isUpdate) {
-                        $this->setCryptId('crypt_id');
-                    }
-                );
-            }
-
-            protected function generateCryptId(): string
-            {
-                $return = 'samestring' . $this->addition;
-                $this->addition = 'abc';
-
-                return $return;
-            }
-        };
-
-        return new $modelClass($persistence ? : new Persistence\Array_());
     }
 }
