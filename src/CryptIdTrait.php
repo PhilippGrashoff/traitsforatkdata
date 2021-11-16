@@ -13,6 +13,8 @@ trait CryptIdTrait
 
     use UniqueFieldTrait; //@codeCoverageIgnore Seems some Bug in Code Coverage, this line is marked as not covered
 
+    protected $cryptIdFieldName = 'crypt_id';
+
     //removed I, l, O, 0 as they can be easily mixed up by humans
     protected $possibleChars = [
         '1',
@@ -78,18 +80,22 @@ trait CryptIdTrait
     /**
      * sets a cryptic Id to the fieldName passed. Only does something if the field is empty.
      */
-    public function setCryptId(string $fieldName)
+    public function setCryptId(): void
     {
-        if (!$this->get($fieldName)) {
-            $this->set($fieldName, $this->generateCryptId());
+        if (!$this->get($this->cryptIdFieldName)) {
+            $this->set($this->cryptIdFieldName, $this->generateCryptId());
             //check if another Record has the same crypt_id, if so generate a new one
-            while (!$this->isFieldUnique($fieldName)) {
-                $this->set($fieldName, $this->generateCryptId());
+            while (!$this->isFieldUnique($this->cryptIdFieldName)) {
+                $this->set($this->cryptIdFieldName, $this->generateCryptId());
             }
         }
         else {
-            $this->getField($fieldName)->read_only = true;
+            $this->getField($this->cryptIdFieldName)->read_only = true;
         }
+    }
+
+    public function getCryptId(): string {
+        return $this->get($this->cryptIdFieldName);
     }
 
     /**
