@@ -4,13 +4,15 @@ namespace traitsforatkdata;
 
 use Atk4\Data\Field;
 
-trait GermanMoneyFormatFieldTrait {
+trait GermanMoneyFormatFieldTrait
+{
 
-    protected function germanPriceForMoneyField(Field $field) {
+    protected function germanPriceForMoneyField(Field $field)
+    {
         $field->typecast = [
             null,
-            function($value, $field, $persistence) {
-                return round((float) str_replace(",",".", (string) $value), 4);
+            function ($value, $field, $persistence) {
+                return round((float)str_replace(",", ".", (string)$value), 4);
             },
         ];
     }

@@ -3,10 +3,6 @@
 namespace traitsforatkdata\tests;
 
 use traitsforatkdata\TestCase;
-use Atk4\Data\Model;
-use Atk4\Data\Persistence;
-use atk4\schema\Migration;
-use traitsforatkdata\CreatedDateAndLastUpdatedTrait;
 use traitsforatkdata\tests\testclasses\ModelWithCreatedDateAndLastUpdatedTrait;
 
 
@@ -19,28 +15,28 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
     {
         $currentDateTime = new \DateTime();
         $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
-        $model->save();
+        $entity = $model->createEntity()->save();
 
         self::assertEquals(
             $currentDateTime->format(DATE_ATOM),
-            $model->get('created_date')->format(DATE_ATOM)
+            $entity->get('created_date')->format(DATE_ATOM)
         );
-        self::assertNull($model->get('last_updated'));
+        self::assertNull($entity->get('last_updated'));
 
         sleep(1);
 
-        $model->set('name', 'someName');
-        $model->save();
+        $entity->set('name', 'someName');
+        $entity->save();
         $newDateTime = new \DateTime();
 
         self::assertNotEquals(
             $newDateTime->format(DATE_ATOM),
-            $model->get('created_date')->format(DATE_ATOM)
+            $entity->get('created_date')->format(DATE_ATOM)
         );
         $newDateTime = new \DateTime();
         self::assertEquals(
             $newDateTime->format(DATE_ATOM),
-            $model->get('last_updated')->format(DATE_ATOM)
+            $entity->get('last_updated')->format(DATE_ATOM)
         );
     }
 
@@ -50,35 +46,36 @@ class CreatedDateAndLastUpdatedTraitTest extends TestCase
      */
     public function testNoFieldsDirtyNothingIsSaved()
     {
-        $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
-        $model->save();
-        $lastUpdated = $model->get('last_updated');
+        $entity = (new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence()))->createEntity();
+        $entity->save();
+        $lastUpdated = $entity->get('last_updated');
         self::assertNull($lastUpdated);
-        $model->save();
+        $entity->save();
         self::assertSame(
-            $model->get('last_updated'),
+            $entity->get('last_updated'),
             $lastUpdated
         );
-        $model->set('name', 'somename');
-        $model->save();
+        $entity->set('name', 'somename');
+        $entity->save();
         self::assertSame(
             'somename',
-            $model->get('name')
+            $entity->get('name')
         );
         self::assertInstanceOf(
             \DateTimeInterface::class,
-            $model->get('last_updated')
+            $entity->get('last_updated')
         );
     }
 
-    public function testSetCreatedDateNotOverwritten() {
-        $model = new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence());
-        $model->set('created_date', (new \DateTime())->modify('-1 Month'));
-        $model->save();
+    public function testSetCreatedDateNotOverwritten()
+    {
+        $entity = (new ModelWithCreatedDateAndLastUpdatedTrait($this->getSqliteTestPersistence()))->createEntity();
+        $entity->set('created_date', (new \DateTime())->modify('-1 Month'));
+        $entity->save();
 
         self::assertEquals(
             (new \DateTime())->modify('-1 Month')->getTimestamp(),
-            $model->get('created_date')->getTimestamp()
+            $entity->get('created_date')->getTimestamp()
         );
     }
 }

@@ -28,7 +28,7 @@ trait CreatedByTrait
 
                 if (
                     isset($this->app->auth->user)
-                    && $this->app->auth->user->loaded()
+                    && $this->app->auth->user->isLoaded()
                 ) {
                     $model->set('created_by', $this->app->auth->user->get($this->app->auth->user->id_field));
                 }

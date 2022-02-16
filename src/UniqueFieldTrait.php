@@ -39,6 +39,6 @@ trait UniqueFieldTrait
         $other->addCondition($this->id_field, '!=', $this->get($this->id_field));
         $other->tryLoadBy($fieldName, $this->get($fieldName));
 
-        return !$other->loaded();
+        return !$other->isLoaded();
     }
 }

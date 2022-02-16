@@ -7,11 +7,12 @@ namespace traitsforatkdata;
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
 
-trait ExtraModelFunctionsTrait {
+trait ExtraModelFunctionsTrait
+{
 
     protected function _exceptionIfThisNotLoaded(): void
     {
-        if (!$this->loaded()) {
+        if (!$this->isLoaded()) {
             throw new Exception(
                 '$this needs to be loaded in ' . debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']
             );
@@ -25,7 +26,7 @@ trait ExtraModelFunctionsTrait {
     public function loadedHasOneRef(string $ref_name): Model
     {
         $model = $this->ref($ref_name);
-        if (!$model->loaded()) {
+        if (!$model->isLoaded()) {
             throw new Exception(
                 'HasOne Reference Model ' . $ref_name . ' with id ' . $this->get($ref_name) . ' could not be loaded'
             );

@@ -38,7 +38,10 @@ trait EncryptedFieldTrait
                     return $value;
                 }
                 $decoded = base64_decode($value);
-                if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
+                if (mb_strlen(
+                        $decoded,
+                        '8bit'
+                    ) < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
                     throw new Exception('An error occurred decrypting an encrypted field: ' . $field->short_name);
                 }
                 $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');

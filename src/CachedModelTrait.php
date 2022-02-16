@@ -11,7 +11,8 @@ use Atk4\Data\Exception;
  * This is the case with models that are hardly ever changed but often accessed.
  * Keep in mind that creating/updating/deleting a model record during a request will render the cached data invalid!
  */
-trait CachedModelTrait  {
+trait CachedModelTrait
+{
 
     protected $cachedModels = [];
 
@@ -37,8 +38,9 @@ trait CachedModelTrait  {
         return $this->cachedModels[$modelName];
     }
 
-    public function unsetCachedModel(string $modelName): void {
-        if(array_key_exists($modelName, $this->cachedModels)) {
+    public function unsetCachedModel(string $modelName): void
+    {
+        if (array_key_exists($modelName, $this->cachedModels)) {
             unset($this->cachedModels[$modelName]);
         }
     }

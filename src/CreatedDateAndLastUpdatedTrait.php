@@ -11,20 +11,22 @@ trait CreatedDateAndLastUpdatedTrait
     protected function addCreatedDateAndLastUpdateFields()
     {
         // Adds created_date and created_by field to model
-        $this->addFields(
+        $this->addField(
+
+            'created_date',
             [
-                [
-                    'created_date',
-                    'type' => 'datetime',
-                    'persist_timezone' => 'Europe/Berlin',
-                    'system' => true
-                ],
-                [
-                    'last_updated',
-                    'type' => 'datetime',
-                    'persist_timezone' => 'Europe/Berlin',
-                    'system' => true
-                ],
+                'type' => 'datetime',
+                'persist_timezone' => 'Europe/Berlin',
+                'system' => true
+            ]
+        );
+        $this->addField(
+
+            'last_updated',
+            [
+                'type' => 'datetime',
+                'persist_timezone' => 'Europe/Berlin',
+                'system' => true
             ]
         );
     }
@@ -38,7 +40,7 @@ trait CreatedDateAndLastUpdatedTrait
         $this->onHook(
             Model::HOOK_BEFORE_INSERT,
             function (self $model, array &$data) {
-                if($data['created_date']) {
+                if ($data['created_date']) {
                     return;
                 }
                 $data['created_date'] = new \DateTime();
