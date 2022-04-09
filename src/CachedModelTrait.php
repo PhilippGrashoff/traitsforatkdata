@@ -28,7 +28,7 @@ trait CachedModelTrait
         }
 
         //App usually carries db property, while models use persistence
-        $model = new $modelName(isset($this->db) ? $this->db : $this->persistence);
+        $model = new $modelName(property_exists($this, 'db') ? $this->db : $this->persistence);
         $a = [];
         foreach ($model as $record) {
             $a[$record->get($record->id_field)] = clone $record;

@@ -35,10 +35,13 @@ trait UniqueFieldTrait
         }
         $other = new static($this->persistence);
         //only load field to save performance
-        $other->only_fields = [$this->id_field, $fieldName];
+        $other->setOnlyFields([$this->id_field, $fieldName]);
         $other->addCondition($this->id_field, '!=', $this->get($this->id_field));
-        $other->tryLoadBy($fieldName, $this->get($fieldName));
-
-        return !$other->isLoaded();
+        try {
+            $other->loadBy($fieldName, $this->get($fieldName));
+            return false;
+        } catch (Exception $e) {
+            return true;
+        }
     }
 }

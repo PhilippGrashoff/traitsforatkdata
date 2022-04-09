@@ -13,7 +13,7 @@ class ModelWithExtraFunctions extends Model {
 
     use ExtraModelFunctionsTrait;
 
-    public $table = 'model_with_extra_functions';
+    public $table = 'ModelWithExtraFunctions';
 
 
     protected function init(): void

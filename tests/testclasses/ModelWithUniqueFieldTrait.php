@@ -12,7 +12,7 @@ class ModelWithUniqueFieldTrait extends Model
 
     use UniqueFieldTrait;
 
-    public $table = 'sometable';
+    public $table = 'ModelWithUniqueFieldTrait';
 
     protected function init(): void
     {

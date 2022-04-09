@@ -5,7 +5,6 @@ namespace traitsforatkdata\tests;
 use traitsforatkdata\TestCase;
 use Atk4\Data\Exception;
 use Atk4\Data\Persistence;
-use atk4\schema\Migration;
 use traitsforatkdata\tests\testclasses\ModelWithUniqueFieldTrait;
 
 
@@ -47,6 +46,6 @@ class UniqueFieldTraitTest extends TestCase
 
     protected function getTestModel(Persistence $persistence = null): ModelWithUniqueFieldTrait
     {
-        return new ModelWithUniqueFieldTrait($persistence ?: $this->getSqliteTestPersistence());
+        return (new ModelWithUniqueFieldTrait($persistence ?: $this->getSqliteTestPersistence()))->createEntity();
     }
 }

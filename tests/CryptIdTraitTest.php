@@ -2,12 +2,11 @@
 
 namespace traitsforatkdata\tests;
 
-use traitsforatkdata\TestCase;
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
-use atk4\schema\Migration;
 use traitsforatkdata\CryptIdTrait;
+use traitsforatkdata\TestCase;
 use traitsforatkdata\tests\testclasses\ModelWithCryptIdTrait;
 
 
@@ -20,6 +19,7 @@ class CryptIdTraitTest extends TestCase
     {
         $modelClass = new class() extends Model {
             use CryptIdTrait;
+
             public $table = 'sometable';
 
         };
@@ -30,33 +30,20 @@ class CryptIdTraitTest extends TestCase
 
     public function testsetCryptId()
     {
-        $model = new ModelWithCryptIdTrait($this->getSqliteTestPersistence());
-        $model->setCryptId('crypt_id');
+        $model = (new ModelWithCryptIdTrait($this->getSqliteTestPersistence()))->createEntity();
+        $model->setCryptId();
         self::assertSame(
             12,
             strlen($model->get('crypt_id'))
         );
     }
 
-    /**
-     * test if cryptId is recalculated if existing one is found. Wrote stupid
-     * test model for that :)
-     */
-    public function testCryptIdRegeneratedIfSameCryptIdAlreadyExists()
-    {
-        $persistence = $this->getSqliteTestPersistence();
-        $model = new ModelWithCryptIdTrait($persistence, ['createSameCryptId' => true]);
-        $model->save();
-        self::assertEquals('samestring', $model->get('crypt_id'));
-        $model2 = new ModelWithCryptIdTrait($persistence, ['createSameCryptId' => true]);
-        $model2->save();
-        self::assertEquals('samestringabc', $model2->get('crypt_id'));
-    }
 
-    public function testFieldSetToReadOnlyIfCryptIdNotEmpty() {
-        $model = new ModelWithCryptIdTrait($this->getSqliteTestPersistence());
+    public function testFieldSetToReadOnlyIfCryptIdNotEmpty()
+    {
+        $model = (new ModelWithCryptIdTrait($this->getSqliteTestPersistence()))->createEntity();
         $model->save();
-        $model->setCryptId('crypt_id');
+        $model->setCryptId();
         self::assertTrue($model->getField('crypt_id')->read_only);
     }
 }

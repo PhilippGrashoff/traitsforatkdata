@@ -3,10 +3,10 @@
 namespace traitsforatkdata\tests;
 
 use Atk4\Data\Model;
-use traitsforatkdata\GermanMoneyFormatFieldTrait;
-use traitsforatkdata\TestCase;
 use Atk4\Data\Persistence;
 use Atk4\Ui\Persistence\Ui;
+use traitsforatkdata\GermanMoneyFormatFieldTrait;
+use traitsforatkdata\TestCase;
 
 class GermanMoneyFormatFieldTraitTest extends TestCase
 {
@@ -55,10 +55,9 @@ class GermanMoneyFormatFieldTraitTest extends TestCase
             protected function init(): void
             {
                 parent::init();
-                $this->addFields(
-                    [
-                        ['money_test', 'type' => 'money'],
-                    ]
+                $this->addField(
+                    'money_test',
+                    ['type' => 'money']
                 );
                 $this->germanPriceForMoneyField($this->getField('money_test'));
             }

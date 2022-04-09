@@ -12,7 +12,7 @@ class ModelWithCreatedByTrait extends Model {
 
     use CreatedByTrait;
 
-    public $table = 'sometable';
+    public $table = 'ModelWithCreatedByTrait';
 
     protected function init(): void
     {

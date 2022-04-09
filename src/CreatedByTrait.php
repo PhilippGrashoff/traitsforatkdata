@@ -10,7 +10,6 @@ trait CreatedByTrait
 
     protected function addCreatedByFieldAndHook(): void
     {
-        // Adds created_date and created_by field to model
         $this->addField(
             'created_by',
             [
@@ -27,10 +26,10 @@ trait CreatedByTrait
                 }
 
                 if (
-                    isset($this->app->auth->user)
-                    && $this->app->auth->user->isLoaded()
+                    isset($this->persistence->getApp()->auth->user)
+                    && $this->persistence->getApp()->auth->user->isLoaded()
                 ) {
-                    $model->set('created_by', $this->app->auth->user->get($this->app->auth->user->id_field));
+                    $model->set('created_by', $this->persistence->getApp()->auth->user->getId());
                 }
             }
         );

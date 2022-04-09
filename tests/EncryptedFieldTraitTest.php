@@ -16,7 +16,7 @@ class EncryptedFieldTraitTest extends TestCase {
         $model = $this->getTestModel();
         $model->set('value', 'Duggu');
         $model->save();
-        $id = $model->get('id');
+        $id = $model->getId();
         $model->unload();
         $model->load($id);
         self::assertEquals($model->get('value'), 'Duggu');
@@ -32,7 +32,7 @@ class EncryptedFieldTraitTest extends TestCase {
         $model->save();
 
         $model2 = $this->getTestModelWithoutEncryptedValueField($persistence);
-        $model2->load($model->get('id'));
+        $model2->load($model->getId());
         self::assertNotEquals($model2->get('value'), 'Duggu');
         self::assertTrue(strlen($model2->get('value')) > 50);
     }
@@ -57,7 +57,7 @@ class EncryptedFieldTraitTest extends TestCase {
 
         $model2 = $this->getTestModel($persistence);
         self::expectException(Exception::class);
-        $model2->load($model->get('id'));
+        $model2->load($model->getId());
     }
 
     public function testExceptionOnDecryptFailTwo() {
@@ -67,7 +67,7 @@ class EncryptedFieldTraitTest extends TestCase {
         $model->save();
 
         $model2 = $this->getTestModelWithoutEncryptedValueField($persistence);
-        $model2->load($model->get('id'));
+        $model2->load($model->getId());
         $v = $model2->get('value');
         $v[0] = 'a';
         $model2->set('value', $v);
@@ -89,7 +89,7 @@ class EncryptedFieldTraitTest extends TestCase {
             }
         };
 
-        return new $modelClass($persistence ? : new Persistence\Array_());
+        return (new $modelClass($persistence ? : new Persistence\Array_()))->createEntity();
     }
 
     protected function getTestModelWithoutEncryptedValueField(Persistence $persistence = null): Model {
@@ -103,6 +103,6 @@ class EncryptedFieldTraitTest extends TestCase {
             }
         };
 
-        return new $modelClass($persistence ? : new Persistence\Array_());
+        return (new $modelClass($persistence ? : new Persistence\Array_()))->createEntity();
     }
 }
