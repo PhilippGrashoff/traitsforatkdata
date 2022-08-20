@@ -11,7 +11,9 @@ use Atk4\Data\Exception;
 trait CryptIdTrait
 {
 
-    use UniqueFieldTrait; //@codeCoverageIgnore Seems some Bug in Code Coverage, this line is marked as not covered
+    use UniqueFieldTrait;
+
+    //@codeCoverageIgnore Seems some Bug in Code Coverage, this line is marked as not covered
 
     protected $cryptIdFieldName = 'crypt_id';
 
@@ -88,13 +90,13 @@ trait CryptIdTrait
             while (!$this->isFieldUnique($this->cryptIdFieldName)) {
                 $this->set($this->cryptIdFieldName, $this->generateCryptId());
             }
-        }
-        else {
+        } else {
             $this->getField($this->cryptIdFieldName)->read_only = true;
         }
     }
 
-    public function getCryptId(): string {
+    public function getCryptId(): string
+    {
         return $this->get($this->cryptIdFieldName);
     }
 
