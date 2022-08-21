@@ -10,6 +10,7 @@ use traitsforatkdata\tests\testclasses\User;
 
 class CreatedByTraitTest extends TestCase {
 
+    /*
     public function testCreatedBy()
     {
         $persistence = $this->getSqliteTestPersistence([ModelWithCreatedByTrait::class, User::class]);
@@ -32,6 +33,7 @@ class CreatedByTraitTest extends TestCase {
         //call again to cover missing line
         $model->save();
     }
+    */
 
     /**/
 }
