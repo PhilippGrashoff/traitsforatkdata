@@ -10,7 +10,7 @@ use traitsforatkdata\tests\testclasses\ModelWithDateTimeHelpersTrait;
 class DateTimeHelperTraitTest extends TestCase
 {
 
-    public function testGetDiffMinutes()
+    public function testGetDiffMinutes(): void
     {
         $d1 = new \DateTime();
         $d2 = clone $d1;
