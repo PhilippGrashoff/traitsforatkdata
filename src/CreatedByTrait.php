@@ -3,11 +3,8 @@
 namespace traitsforatkdata;
 
 use Atk4\Data\Model;
-
-
 trait CreatedByTrait
 {
-
     protected function addCreatedByFieldAndHook(): void
     {
         $this->addField(
@@ -24,7 +21,6 @@ trait CreatedByTrait
                 if ($isUpdate) {
                     return;
                 }
-
                 if (
                     isset($this->persistence->getApp()->auth->user)
                     && $this->persistence->getApp()->auth->user->isLoaded()

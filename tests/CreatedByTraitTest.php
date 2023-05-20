@@ -11,7 +11,6 @@ use traitsforatkdata\tests\testclasses\User;
 
 class CreatedByTraitTest extends TestCase {
 
-    /*
     public function testCreatedBy()
     {
         $app = new AppWithAuth(['always_run' => false]);
